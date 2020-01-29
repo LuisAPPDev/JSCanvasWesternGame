@@ -7,8 +7,9 @@ const ScoreBoard = {
         this.ctx.font = "30px sans-serif"
     },
 
-    update: function (score) {
+    update: function (score, lifes) {
         this.ctx.fillStyle = "black";
-        this.ctx.fillText(Math.floor(score), 50, 50);
+        this.ctx.fillText(`Score ${Math.floor(score)}`, 50, 50);
+        this.ctx.fillText(`Vidas: ${lifes}`, 50, 80)
     }
 };
