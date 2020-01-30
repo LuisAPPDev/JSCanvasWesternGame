@@ -1,0 +1,37 @@
+h1 {
+    color: white;
+    text-align: center;
+    font-size: 7em;
+    margin-top: -10px;
+}
+
+
+button {
+    font-size: 2em;
+    font-weight: 200;
+    animation: bounceIn 2s;
+}
+
+.example_b {
+    color: #fff !important;
+    text-transform: uppercase;
+    text-decoration: none;
+    /* background: #FFE633; */
+    background: #fcca05;
+    padding: 20px;
+    margin-top: 370px;
+    font-size: 2em;
+    font-weight: 600;
+    border-radius: 50px;
+    display: inline-block;
+    border: none;
+    transition: all 0.4s ease 0s;
+
+}
+
+.example_b:hover {
+    text-shadow: 0px 0px 6px rgba(255, 255, 255, 1);
+    -webkit-box-shadow: 0px 5px 40px -10px rgba(0, 0, 0, 0.57);
+    -moz-box-shadow: 0px 5px 40px -10px rgba(0, 0, 0, 0.57);
+    transition: all 0.4s ease 0s;
+}
