@@ -2,8 +2,8 @@ class Player {
 
     constructor(ctx, cWidth, cHeight) {
 
-        this._width = undefined
-        this._height = undefined
+        this._width = 80
+        this._height = 80
         this._speed = 1
         this._xPos = cWidth;
         this._yPos = cHeight;
@@ -19,7 +19,6 @@ class Player {
 
     }
 
-
     moveRight() {
         this._sheriffPosX < this._rLimit ? this._sheriffPosX += 60 : null
     }
@@ -29,12 +28,6 @@ class Player {
     }
 
     draw() {
-        this._ctx.drawImage(this.myImage, this._sheriffPosX - 100, this._yPos - 100, 80, 80)
+        this._ctx.drawImage(this.myImage, this._sheriffPosX - 100, this._yPos - 100, this._width, this._height)
     }
-
-
-
-
-
-
 }

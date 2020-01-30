@@ -23,6 +23,8 @@ const game = {
     obstaclesDown: [],
     obstaclesBoom: [],
     shoots: [],
+    apples: [],
+    hats: [],
     init() {
         this.canvasDom = document.getElementById("canvas")
         this.ctx = this.canvasDom.getContext('2d')
@@ -43,16 +45,25 @@ const game = {
             this.framesCounter > 1000 ? this.framesCounter = 0 : null
             this.clear();
             this.framesCounter++;
+            this.generateObstacles();
             this.drawAll();
             this.moveAll();
-            this.generateObstacles();
+            this.guest1.myImage.framesIndex === 1 ? this.generateGuestItems() : null;
+            this.guestAttack();
             // eliminamos obstáculos fuera del canvas
-            this.clearObstacles(); // Limpiamos del array de obstaculos los que salgan de la pantalla
             this.checkCollision(this.obstaclesDown, 0);
             this.checkCollision(this.obstaclesMed, 0);
             this.checkCollision(this.obstaclesUp, 0);
             this.checkCollision(this.obstaclesBoom, 1);
+            this.checkCollisionGuest(this.apples);
+            this.checkCollisionGuest(this.hats);
             this.stillAlive();
+            this.clearObstacles(this.obstaclesDown);
+            this.clearObstacles(this.obstaclesMed);
+            this.clearObstacles(this.obstaclesUp);
+
+
+
 
         }, 1000 / this.fps);
 
@@ -69,6 +80,8 @@ const game = {
         this.obstaclesDown = [];
         this.obstaclesBoom = [];
         this.shoots = [];
+        this.apples = [];
+        this.hats = [];
         this.scoreboard = ScoreBoard;
         this.scoreboard.init(this.ctx);
         this.score = 0;
@@ -85,7 +98,8 @@ const game = {
         this.obstaclesDown.forEach(obs => obs.draw());
         this.obstaclesBoom.forEach(obs => obs.drawBoom(this.framesCounter));
         this.shoots.forEach(bullet => bullet.draw());
-        this.drawScore();
+        this.apples.forEach(apple => apple.draw());
+        this.hats.forEach(hat => hat.draw());
 
 
     },
@@ -114,8 +128,16 @@ const game = {
 
             e.keyCode == 37 ? this.sheriff.moveLeft() : null
             e.keyCode == 39 ? this.sheriff.moveRight() : null
-            e.keyCode == 32 ? this.shoots.push(new Bullet(this.ctx, this.sheriff._sheriffPosX, this.wSize.height, 20, 20, "img/icon_fire.png")) : null
 
+            if (e.keyCode == 32) {
+                this.shoots.push(new Bullet(this.ctx, this.sheriff._sheriffPosX, this.wSize.height, 20, 20, "img/icon_fire.png"));
+                this.fireSound = document.createElement("audio")
+                this.fireSound.src = "sound/fire.mp3"
+                this.fireSound.volume = 0.9
+                this.fireSound.play()
+
+
+            }
         }
     },
 
@@ -127,34 +149,57 @@ const game = {
 
         (this.framesCounter % (this.randomInt(180, 220)) == 0) ? this.obstaclesUp.push(new Obstacles(this.ctx, this.wSize.width - 100, this.wSize.height - 380, 30, 30, "img/dart1.png")): null;
 
-        (this.framesCounter % (this.randomInt(300, 500)) == 0) ? this.obstaclesBoom.push(new Obstacles(this.ctx, this.wSize.width - 750, this.wSize.height - 380, 30, 30, "img/throw_bomb12.png")): null;
+        (this.framesCounter % (this.randomInt(700, 1000)) == 0) ? this.obstaclesBoom.push(new Obstacles(this.ctx, this.wSize.width - 750, this.wSize.height - 380, 30, 30, "img/throw_bomb12.png")): null;
 
     },
 
-    clearObstacles() {
+    clearObstacles(array) {
         //funcion para limpiar obstaculos
-
-        this.obstaclesUp.forEach((obs, idx) => {
-            (obs.posX <= this.wSize.width - 640) ? this.obstaclesUp.splice(idx, 1): null
+        array.forEach((obs, idx) => {
+            (obs.posX <= this.wSize.width - 640) ? array.splice(idx, 1): null
         });
 
-        this.obstaclesMed.forEach((obs, idx) => {
-            (obs.posX <= this.wSize.width - 640) ? this.obstaclesMed.splice(idx, 1): null
-        });
 
-        this.obstaclesDown.forEach((obs, idx) => {
-            (obs.posX <= this.wSize.width - 640) ? this.obstaclesDown.splice(idx, 1): null
-        });
 
         this.obstaclesBoom.forEach((obs, idx) => {
-            (obs.posX > this.wSize.width) ? this.obstaclesDown.splice(idx, 1): null
+            if (obs.posX > this.wSize.width) {
+                // this.boomSound = document.createElement("audio")
+                // this.boomSound.src = "sound/bomb.mp3"
+                // this.boomSound.volume = 0.9
+                // this.boomSound.play()
+                this.obstaclesBoom.splice(idx, 1)
+            }
         });
+
+        this.apples.forEach((obs, idx) => {
+            (obs.cHeight > this.wSize.height) ? this.apples.splice(idx, 1): null
+        });
+
+        this.hats.forEach((obs, idx) => {
+            (obs.cHeight > this.wSize.height) ? this.hats.splice(idx, 1): null
+        });
+
+
+
+
+    },
+    generateGuestItems() {
+
+        this.apples.length === 0 ? this.apples.push(new Things(this.ctx, this.wSize.width - 360, this.wSize.height - 200, 15, 15, "img/apple.png")) : null
+        this.hats.length === 0 ? this.hats.push(new Things(this.ctx, this.wSize.width - 480, this.wSize.height - 200, 15, 15, "img/hat.png")) : null;
+
+    },
+
+    guestAttack() {
+
+        this.hats.length === 1 ? this.hats[0].moveMaleAttack() : null;
+        this.apples.length === 1 ? this.apples[0].moveFemaleAttack() : null;
 
 
     },
     checkCollision(arr, tnt) {
         // funcion para comprobar colisiones
-        // console.log("aaa")
+
         arr.forEach(
             (obs, idx) =>
             this.shoots.forEach(elm => {
@@ -176,19 +221,44 @@ const game = {
                 }
             })
         );
-        //fin del juego, detenemos intervalo
+
+
+
+
+    },
+    checkCollisionGuest(array) {
+        console.log(array)
+        array.forEach((elm, idx) => {
+
+
+            if (
+                this.sheriff._sheriffPosX + this.sheriff._width - 100 >= elm.CanvasW &&
+                this.sheriff._yPos - 100 + this.sheriff._height >= elm.cHeight &&
+                this.sheriff._sheriffPosX - 100 <= elm.CanvasW + elm.bulletW &&
+                this.sheriff._yPos - 100 <= elm.cHeight + elm.bulletH)
+
+
+
+            {
+                this.sheriff._lifes--;
+
+                array.splice(idx, 1)
+
+            }
+        })
+
     },
     stillAlive() {
-
+        this.drawScore();
         this.sheriff._lifes === 0 ? this.gameOver() : null
 
     },
     gameOver() {
-        console.log("Ha entrado en GameOver")
         //Gameover detiene el juego.
         clearInterval(this.interval);
     },
     randomInt(min, max) {
         return Math.floor(Math.random() * (max - min + 1) + min);
     },
+
 };
