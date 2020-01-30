@@ -31,10 +31,8 @@ const game = {
         this.setDimensions()
         this.setListeners();
         this.start();
-
-
-
     },
+
     setDimensions() {
         this.wSize.width = this.canvasDom.width
         this.wSize.height = this.canvasDom.height
@@ -256,6 +254,8 @@ const game = {
     gameOver() {
         //Gameover detiene el juego.
         clearInterval(this.interval);
+        confirm(`¿Deseas jugar de nuevo?\n score: ${this.score}`) ? this.init() : window.close()
+
     },
     randomInt(min, max) {
         return Math.floor(Math.random() * (max - min + 1) + min);
