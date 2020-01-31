@@ -5,20 +5,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="icon" type="image/ico" href="favicon.ico">
-    <link rel="stylesheet" href="main.css" />
-    <title>Western Bar Game</title>
+    <script src="./js/scoreboard.js"></script>
+    <script src="./js/bullet.js"></script>
+    <script src="./js/obstacles.js"></script>
+    <script src="./js/guests.js"></script>
+    <script src="./js/player.js"></script>
+    <script src="./js/background.js"></script>
+    <script src="./js/game.js"></script>
+    <script src="./js/script.js"></script>
+
+    </script>
+    <link rel="stylesheet" href="style.css">
+    <title>Western Bar</title>
+</head>
 
 <body
-    style=" text-align: center;background-image: url(img/wallpaper.jpg);background-repeat: no-repeat;background-size: cover;">
-    <h1>
-        WESTERN BAR GAME
-    </h1>
-    <div>
+    style="text-align: center;background-image: url(img/woodropes.png);background-repeat: no-repeat;background-size: cover; ">
 
-        <div class="button_cont"><a class="example_b" href="index.html">CLICK
-                HERE TO PLAY!!!</a></div>
-    </div>
+    <button id="start-button">Start Game</button><br>
+    <img src="img/title_logo.png" width="auto" style="margin-top: 80px">
+    <h2 style="margin-top: 50px;">How to play?<h2>
+            <p>Use Right and Left keys to move the Sheriff and the space bar to shoot, good luck!</p>
+            <div id="game-board">
+
+                <canvas style="margin-top: 100px;" width="800" height="400" id="canvas"></canvas>
+            </div>
+
+
 </body>
 
 </html>
