@@ -38,6 +38,10 @@ const game = {
         this.wSize.height = this.canvasDom.height
     },
     start() {
+        this.startSound = document.createElement("audio")
+        this.startSound.src = "sound/start.ogg"
+        this.startSound.volume = 0.9
+        this.startSound.play()
         this.reset()
         this.interval = setInterval(() => {
             this.framesCounter > 1000 ? this.framesCounter = 0 : null
@@ -46,7 +50,7 @@ const game = {
             this.generateObstacles();
             this.drawAll();
             this.moveAll();
-            this.guest1.myImage.framesIndex === 1 ? this.generateGuestItems() : null;
+            this.guest1._myImage.framesIndex === 1 ? this.generateGuestItems() : null;
             this.guestAttack();
             // eliminamos obstáculos fuera del canvas
             this.checkCollision(this.obstaclesDown, 0);
@@ -154,13 +158,13 @@ const game = {
     clearObstacles(array) {
         //funcion para limpiar obstaculos
         array.forEach((obs, idx) => {
-            (obs.posX <= this.wSize.width - 640) ? array.splice(idx, 1): null
+            (obs._posX <= this.wSize.width - 640) ? array.splice(idx, 1): null
         });
 
 
 
         this.obstaclesBoom.forEach((obs, idx) => {
-            if (obs.posX > this.wSize.width) {
+            if (obs._posX > this.wSize.width) {
                 // this.boomSound = document.createElement("audio")
                 // this.boomSound.src = "sound/bomb.mp3"
                 // this.boomSound.volume = 0.9
@@ -170,11 +174,11 @@ const game = {
         });
 
         this.apples.forEach((obs, idx) => {
-            (obs.cHeight > this.wSize.height) ? this.apples.splice(idx, 1): null
+            (obs._cHeight > this.wSize.height) ? this.apples.splice(idx, 1): null
         });
 
         this.hats.forEach((obs, idx) => {
-            (obs.cHeight > this.wSize.height) ? this.hats.splice(idx, 1): null
+            (obs._cHeight > this.wSize.height) ? this.hats.splice(idx, 1): null
         });
 
 
@@ -203,13 +207,17 @@ const game = {
             this.shoots.forEach(elm => {
 
                 if (
-                    elm.bWidth + elm.bulletW >= obs.posX &&
-                    elm.cHeight + elm.bulletH >= obs.posY &&
-                    elm.bWidth <= obs.posX + obs.width &&
-                    elm.cHeight <= obs.posY + obs.height) {
+                    elm._bWidth + elm._bulletW >= obs._posX &&
+                    elm._cHeight + elm._bulletH >= obs._posY &&
+                    elm._bWidth <= obs._posX + obs._width &&
+                    elm._cHeight <= obs._posY + obs._height) {
 
                     if (tnt === 1) {
                         this.sheriff._lifes--;
+                        this.lifelost = document.createElement("audio")
+                        this.lifelost.src = "sound/cry.ogg"
+                        this.lifelost.volume = 0.9
+                        this.lifelost.play()
                         arr.splice(idx, 1)
                     } else {
                         this.score += 10;
@@ -225,21 +233,26 @@ const game = {
 
     },
     checkCollisionGuest(array) {
-        console.log(array)
+
         array.forEach((elm, idx) => {
 
 
             if (
-                this.sheriff._sheriffPosX + this.sheriff._width - 100 >= elm.CanvasW &&
-                this.sheriff._yPos - 100 + this.sheriff._height >= elm.cHeight &&
-                this.sheriff._sheriffPosX - 100 <= elm.CanvasW + elm.bulletW &&
-                this.sheriff._yPos - 100 <= elm.cHeight + elm.bulletH)
+                this.sheriff._sheriffPosX + this.sheriff._width - 100 >= elm._CanvasW &&
+                this.sheriff._yPos - 100 + this.sheriff._height >= elm._cHeight &&
+                this.sheriff._sheriffPosX - 100 <= elm._CanvasW + elm._bulletW &&
+                this.sheriff._yPos - 100 <= elm._cHeight + elm._bulletH)
 
 
 
             {
                 this.sheriff._lifes--;
-
+                if (this.sheriff._lifes > 0) {
+                    this.lifelostg = document.createElement("audio")
+                    this.lifelostg.src = "sound/cry.ogg"
+                    this.lifelostg.volume = 0.9
+                    this.lifelostg.play()
+                }
                 array.splice(idx, 1)
 
             }
@@ -254,7 +267,14 @@ const game = {
     gameOver() {
         //Gameover detiene el juego.
         clearInterval(this.interval);
-        confirm(`¿Deseas jugar de nuevo?\n score: ${this.score}`) ? this.init() : window.close()
+        this.gameOverSound = document.createElement("audio")
+        this.gameOverSound.src = "sound/gameover.ogg"
+        this.gameOverSound.volume = 0.9
+        this.gameOverSound.play()
+        setTimeout(() => {
+            confirm(`¿Deseas jugar de nuevo?`) ? this.init() : window.close()
+        }, 3000);
+
 
     },
     randomInt(min, max) {

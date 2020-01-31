@@ -1,19 +1,19 @@
 class Background {
     constructor(ctx) {
-        this.ctx = ctx
-        this.width = 800
-        this.height = 400
-        this.image = new Image()
-        this.image.src = "img/game_bg_1.png"
-        this.posX = 0
-        this.posY = 0
+        this._ctx = ctx
+        this._width = 800
+        this._height = 400
+        this._image = new Image()
+        this._image.src = "img/game_bg_1.png"
+        this._posX = 0
+        this._posY = 0
 
 
     }
 
     draw() {
 
-        this.ctx.drawImage(this.image, this.posX, this.posY, this.width, this.height)
+        this._ctx.drawImage(this._image, this._posX, this._posY, this._width, this._height)
 
     }
 

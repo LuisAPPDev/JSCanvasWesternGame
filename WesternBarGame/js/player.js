@@ -12,10 +12,10 @@ class Player {
         this._rLimit = this._sheriffPosX - 20
         this._lLimit = cWidth - 450
         this._lifes = 3
-        this.myImage = new Image()
-        this.myImage.src = "img/sherifshot.png"
-        this.fire = new Image()
-        this.fire.src = "img/icon_fire.png"
+        this._myImage = new Image()
+        this._myImage.src = "img/sherifshot.png"
+        this._fire = new Image()
+        this._fire.src = "img/icon_fire.png"
 
     }
 
@@ -28,6 +28,6 @@ class Player {
     }
 
     draw() {
-        this._ctx.drawImage(this.myImage, this._sheriffPosX - 100, this._yPos - 100, this._width, this._height)
+        this._ctx.drawImage(this._myImage, this._sheriffPosX - 100, this._yPos - 100, this._width, this._height)
     }
 }
