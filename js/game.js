@@ -272,7 +272,7 @@ const game = {
         this.gameOverSound.volume = 0.9
         this.gameOverSound.play()
         setTimeout(() => {
-            confirm(`¿Deseas jugar de nuevo?`) ? this.init() : window.close()
+            confirm(`¿Deseas jugar de nuevo? \n Score: ${this.score}`) ? this.init() : window.close()
         }, 3000);
 
 
