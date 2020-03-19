@@ -1,6 +1,8 @@
 # Western Bar Game
 
-Game made with Canvas
+Game inspired in a Casio VideoGame 80's machine.
+
+![Picture of the Casio Game Machine](https://i85.servimg.com/u/f85/12/85/01/54/_img_316.jpg)
 
 ### Demo
 
