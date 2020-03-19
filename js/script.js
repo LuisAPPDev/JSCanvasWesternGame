@@ -5,6 +5,7 @@ window.onload = function () {
 
     function startGame() {
         game.init()
-    }
+        if (document.activeElement != document.body) document.activeElement.blur();
+     }
 
 };
